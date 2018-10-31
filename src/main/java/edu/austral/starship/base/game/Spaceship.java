@@ -6,15 +6,35 @@ import edu.austral.starship.base.vector.Vector2;
 
 public class Spaceship extends GameObject implements Movable, Rotatable {
 
-    public Spaceship(int id, Vector2 position, Vector2 velocity) {
-        super(id, position, velocity);
+    private int lives;
+
+    private Player player;
+
+    private int pointValue;
+
+    public Spaceship(String id, Vector2 position, Vector2 velocity, Player player, int pointValue, int lives) {
+        super.id = id;
+        super.position = position;
+        super.velocity = velocity;
+        this.player = player;
+        this.lives = lives;
+        this.pointValue = pointValue;
+    }
+
+    public Spaceship(String id, Vector2 position, Player player, int pointValue, int lives) {
+        super.id = id;
+        super.position = position;
+        super.velocity = Vector2.vector(0, 0);
+        this.player = player;
+        this.lives = lives;
+        this.pointValue = pointValue;
     }
 
     public void accelerate(Vector2 vector) {
-        this.velocity = this.velocity.add(vector);
+        this.velocity = this.velocity.add(vector.rotate(orientation));
     }
 
     public void rotate(float factor) {
-        this.position = this.position.rotate(factor);
+        this.orientation += factor;
     }
 }

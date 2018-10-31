@@ -1,9 +1,14 @@
 package edu.austral.starship;
 
+import edu.austral.starship.base.container.DrawableContainer;
+import edu.austral.starship.base.container.GameObjectContainer;
+import edu.austral.starship.base.container.ShapedObjectContainer;
+import edu.austral.starship.base.factory.SpaceshipFactory;
 import edu.austral.starship.base.framework.GameFramework;
 import edu.austral.starship.base.framework.ImageLoader;
 import edu.austral.starship.base.framework.WindowSettings;
 import edu.austral.starship.base.game.GameObject;
+import edu.austral.starship.base.game.Player;
 import edu.austral.starship.base.game.Spaceship;
 import edu.austral.starship.base.input.*;
 import edu.austral.starship.base.vector.Vector2;
@@ -18,40 +23,57 @@ import java.util.Set;
 
 public class CustomGameFramework implements GameFramework {
     
-    private List<Drawable> drawables;
+    //private List<Drawable> drawables;
 
-    private GameObject object2; //REMOVE
+    //private GameObject object2; //REMOVE
 
     private InputInterpreter interpreter;
+
+    private SpaceshipFactory spaceshipFactory;
+
+    // This references to containers are important
+    private DrawableContainer drawables = new DrawableContainer();
+
+    private ShapedObjectContainer collisionables = new ShapedObjectContainer();
+
+    private GameObjectContainer objects = new GameObjectContainer();
     
     @Override
     public void setup(WindowSettings windowsSettings, ImageLoader imageLoader) {
         windowsSettings
             .setSize(500, 500);
         
-        drawables = new ArrayList<>();
+        //drawables = new ArrayList<>();
+
+        spaceshipFactory = new SpaceshipFactory(collisionables, objects, drawables);
+
+        PImage image = imageLoader.load("spaceship.png");
+
+        Player player1 = new Player();
+
+        Spaceship object = spaceshipFactory.createSpaceship(player1, Vector2.vector(150, 150), image);
         //Placeable element = new UIElement(Vector2.vector(10, 10));
-        Spaceship object = new Spaceship(10, Vector2.vector(150, 10), Vector2.vector(0, 0));
-        object2 = object;
-        Placeable element = new PlaceableObject(object);
+        //Spaceship object = new Spaceship(10, Vector2.vector(150, 150));
+        //object2 = object;
+        //PlaceableObject element = new PlaceableObject(object);
 
         // acceleration values should be way smaller
         Action moveW = new Move(object, Vector2.vector(0, -0.05f));
-        Action moveA = new Move(object, Vector2.vector(-0.05f, 0));
+        //Action moveA = new Move(object, Vector2.vector(-0.05f, 0));
         Action moveS = new Move(object, Vector2.vector(0, 0.05f));
-        Action moveD = new Move(object, Vector2.vector(0.05f, 0));
+        //Action moveD = new Move(object, Vector2.vector(0.05f, 0));
 
         Action rotateCW = new Rotate(object, 0.1f);
         Action rotateCCW = new Rotate(object, -0.1f);
 
         // Check how to map keys to keyCodes better (or work directly with keys).
         KeyBind keyW = new KeyBind(moveW, true, 87);
-        KeyBind keyA = new KeyBind(moveA, true, 65);
+        //KeyBind keyA = new KeyBind(moveA, true, 65);
         KeyBind keyS = new KeyBind(moveS, true, 83);
-        KeyBind keyD = new KeyBind(moveD, true, 68);
+        //KeyBind keyD = new KeyBind(moveD, true, 68);
 
-        KeyBind keyE = new KeyBind(rotateCW, true, 69);
-        KeyBind keyQ = new KeyBind(rotateCCW, true, 81);
+        KeyBind keyD = new KeyBind(rotateCW, true, 68);
+        KeyBind keyA = new KeyBind(rotateCCW, true, 65);
 
         interpreter = new InputInterpreter();
         interpreter.addKeyBind(keyW);
@@ -59,8 +81,8 @@ public class CustomGameFramework implements GameFramework {
         interpreter.addKeyBind(keyS);
         interpreter.addKeyBind(keyD);
 
-        interpreter.addKeyBind(keyE);
-        interpreter.addKeyBind(keyQ);
+        //interpreter.addKeyBind(keyE);
+        //interpreter.addKeyBind(keyQ);
 
         /*
         Drawable drawable = new Label(element, "Executive producer Eduardo Lalor", Vector2.vector(0, 0));
@@ -70,19 +92,25 @@ public class CustomGameFramework implements GameFramework {
         drawables.add(drawable2);
         drawables.add(drawable3);
         */
-        PImage image = imageLoader.load("spaceship.png");
-        Drawable drawable = new Sprite(image, element, 128, 128);
-        drawables.add(drawable);
+        //Drawable drawable = new Sprite(image, element, 128, 128);
+        //drawables.add(drawable);
     }
 
     // Should draw method deal with the logic of the keys being pressed?
     // If so the name should be changed to something more representative of its new responsibility.
     @Override
     public void draw(PGraphics graphics, float timeSinceLastDraw, Set<Integer> keySet) {
-        for (Drawable drawable : drawables) {
+        for (Drawable drawable : drawables.getDrawables()) {
             drawable.draw(graphics);
         }
-        object2.updatePosition();
+
+        for (GameObject object : objects.getObjects()) {
+            object.updatePosition();
+        }
+
+        //object2.updatePosition();
+
+        //graphics.ellipse(150, 150, 5, 5); //REMOVE
 
         // Should this be done here?
         for (Integer keyCode : keySet) {

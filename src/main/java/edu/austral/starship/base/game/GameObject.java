@@ -6,19 +6,27 @@ public abstract class GameObject {
 
     //public Destroyer destroyer;
 
-    public int id; //could be changed to String
+    String id; //could be changed to String
 
-    public Vector2 position;
+    Vector2 position;
 
-    public Vector2 velocity;
+    Vector2 velocity;
 
-    public GameObject(int id, Vector2 position, Vector2 velocity) {
-        this.id = id;
-        this.position = position;
-        this.velocity = velocity;
-    }
+    float orientation; // Orientation may be better represented with an angle instead of a vector (check).
 
     public void updatePosition() {
         this.position = position.add(velocity);
+    }
+
+    public Vector2 getPosition() {
+        return this.position;
+    }
+
+    public Vector2 getVelocity()  {
+        return this.velocity;
+    }
+
+    public float getOrientation() {
+        return this.orientation;
     }
 }

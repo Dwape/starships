@@ -1,6 +1,7 @@
 package edu.austral.starship.base.view;
 
 import edu.austral.starship.base.vector.Vector2;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
@@ -10,13 +11,13 @@ public class Sprite implements Drawable{
 
     public PImage image;
 
-    public Placeable placeable;
+    public PlaceableObject placeable;
 
     private float width;
 
     private float height;
 
-    public Sprite(PImage image, Placeable placeable, float width, float height) {
+    public Sprite(PImage image, PlaceableObject placeable, float width, float height) {
         this.image = image;
         this.placeable = placeable;
         this.width = width;
@@ -24,7 +25,12 @@ public class Sprite implements Drawable{
     }
 
     public void draw(PGraphics graphics) {
-        Vector2 position = placeable.getPosition();
-        graphics.image(image, position.getX(), position.getY(), width, height);
+        graphics.pushMatrix();
+        Vector2 position = placeable.getPosition().substract(Vector2.vector(width/2, height/2));
+        graphics.imageMode(PConstants.CENTER);
+        graphics.translate(position.getX(), position.getY());
+        graphics.rotate(placeable.getOrientation());
+        graphics.image(image, 0, 0, width, height);
+        graphics.popMatrix();
     }
 }
