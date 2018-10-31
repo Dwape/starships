@@ -2,12 +2,12 @@ package edu.austral.starship.base.collision;
 
 import java.awt.*;
 
-public class ShapedObject implements Collisionable<ShapedObject>{
+public abstract class ShapedObject implements Collisionable<ShapedObject>, Visitor, Visitable {
 
-    private Shape shape;
+    Shape shape;
 
     public void collisionedWith(ShapedObject object) {
-
+        object.accept(this);
     }
 
     public Shape getShape() {

@@ -36,7 +36,7 @@ public class SpaceshipFactory extends Factory{
 
         drawables.addDrawable(drawable, id);
 
-        ShapedObject collisionable = new ShapedObject(); //TODO
+        //ShapedObject collisionable = new ShapedObject(); //TODO
 
         return object;
     }
