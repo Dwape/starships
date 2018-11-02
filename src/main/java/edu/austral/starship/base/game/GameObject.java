@@ -20,7 +20,9 @@ public abstract class GameObject {
 
     boolean destroyed;
 
-    public void updatePosition() {
+    public abstract void update();
+
+    void updatePosition() {
         this.position = position.add(velocity);
     }
 

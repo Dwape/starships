@@ -6,6 +6,8 @@ public abstract class Projectile extends GameObject{
 
     float lifespan;
 
+    float lifespanCounter;
+
     public void leftPerimeter() {
         this.destroy();
     }

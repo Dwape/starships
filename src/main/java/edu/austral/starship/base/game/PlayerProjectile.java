@@ -14,6 +14,15 @@ public class PlayerProjectile extends Projectile{
         super.position = position;
         super.velocity = velocity;
         super.destroyed = false;
+        super.lifespanCounter = 0;
+    }
+
+    public void update() {
+        updatePosition();
+        lifespanCounter++;
+        if (lifespanCounter > lifespan) {
+            this.destroy();
+        }
     }
 
     public void awardPoints(Scoreable scoreable) {

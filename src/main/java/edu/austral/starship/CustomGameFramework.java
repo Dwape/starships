@@ -99,8 +99,11 @@ public class CustomGameFramework implements GameFramework {
         interpreter.addKeyBind(keyLeft);
 
         ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables);
-        Weapon weapon = new Weapon(projectileFactory, object, 1, 30, image);
-        Weapon weapon2 = new Weapon(projectileFactory, object2, 1, 30, image);
+        Weapon weapon = new Weapon(projectileFactory, object, 1, 150, image);
+        Weapon weapon2 = new Weapon(projectileFactory, object2, 1, 150, image);
+
+        object.addWeapon(weapon);
+        object2.addWeapon(weapon2);
 
         Action shoot1 = new Shoot(weapon);
         Action shoot2 = new Shoot(weapon2);
@@ -128,7 +131,7 @@ public class CustomGameFramework implements GameFramework {
             if (object.isDestroyed()) {
                 destroyer.destroy(object.getId());
             } else {
-                object.updatePosition();
+                object.update();
             }
         }
 
