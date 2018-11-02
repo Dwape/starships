@@ -13,6 +13,7 @@ public class PlayerProjectile extends Projectile{
         this.owner = owner;
         super.position = position;
         super.velocity = velocity;
+        super.destroyed = false;
     }
 
     public void awardPoints(Scoreable scoreable) {

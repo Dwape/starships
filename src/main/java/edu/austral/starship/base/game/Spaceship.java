@@ -12,15 +12,6 @@ public class Spaceship extends GameObject implements Movable, Rotatable {
 
     private int pointValue;
 
-    public Spaceship(String id, Vector2 position, Vector2 velocity, Player player, int pointValue, int lives) {
-        super.id = id;
-        super.position = position;
-        super.velocity = velocity;
-        this.player = player;
-        this.lives = lives;
-        this.pointValue = pointValue;
-    }
-
     public Spaceship(String id, Vector2 position, Player player, int pointValue, int lives) {
         super.id = id;
         super.position = position;
@@ -28,6 +19,7 @@ public class Spaceship extends GameObject implements Movable, Rotatable {
         this.player = player;
         this.lives = lives;
         this.pointValue = pointValue;
+        super.destroyed = false;
     }
 
     public void accelerate(Vector2 vector) {

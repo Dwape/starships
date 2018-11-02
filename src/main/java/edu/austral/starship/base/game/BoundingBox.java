@@ -27,7 +27,10 @@ public class BoundingBox {
             stop = stop.add(Vector2.vector(0, -velocity.getY()));
         }
 
-        object.stop(stop);
-        object.leftPerimeter();
+        if (stop.getX() != 0 || stop.getY() != 0) {
+             // should only be executed if they actually left the perimeter
+            object.stop(stop);
+            object.leftPerimeter();
+        }
     }
 }

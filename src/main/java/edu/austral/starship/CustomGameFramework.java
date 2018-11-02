@@ -5,6 +5,7 @@ import edu.austral.starship.base.collision.ShapedObject;
 import edu.austral.starship.base.container.DrawableContainer;
 import edu.austral.starship.base.container.GameObjectContainer;
 import edu.austral.starship.base.container.ShapedObjectContainer;
+import edu.austral.starship.base.factory.Destroyer;
 import edu.austral.starship.base.factory.ProjectileFactory;
 import edu.austral.starship.base.factory.SpaceshipFactory;
 import edu.austral.starship.base.framework.GameFramework;
@@ -42,6 +43,8 @@ public class CustomGameFramework implements GameFramework {
     private GameObjectContainer objects = new GameObjectContainer();
 
     private BoundingBox box = new BoundingBox(500, 500);
+
+    private Destroyer destroyer;
     
     @Override
     public void setup(WindowSettings windowsSettings, ImageLoader imageLoader) {
@@ -49,6 +52,8 @@ public class CustomGameFramework implements GameFramework {
             .setSize(500, 500);
 
         // this responsibilities should be delegated to another class
+
+        destroyer = new Destroyer(drawables, collisionables, objects);
 
         engine = new CollisionEngine<>();
 
@@ -120,7 +125,11 @@ public class CustomGameFramework implements GameFramework {
 
         for (GameObject object : objects.getObjects()) {
             box.checkBounds(object);
-            object.updatePosition();
+            if (object.isDestroyed()) {
+                destroyer.destroy(object.getId());
+            } else {
+                object.updatePosition();
+            }
         }
 
         for (ShapedObject collisionable : collisionables.getObjects()) {

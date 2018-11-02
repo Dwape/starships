@@ -7,7 +7,7 @@ public abstract class Projectile extends GameObject{
     float lifespan;
 
     public void leftPerimeter() {
-
+        this.destroy();
     }
 
     public void resolveCollision() {

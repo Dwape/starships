@@ -18,6 +18,8 @@ public abstract class GameObject {
 
     float orientation; // Orientation may be better represented with an angle instead of a vector (check).
 
+    boolean destroyed;
+
     public void updatePosition() {
         this.position = position.add(velocity);
     }
@@ -45,5 +47,13 @@ public abstract class GameObject {
     // The only type of object that needs to be stopped is the spaceship, the other ones are destroyed.
     public void stop(Vector2 vector) {
         this.velocity = velocity.add(vector);
+    }
+
+    public void destroy() {
+        this.destroyed = true;
+    }
+
+    public boolean isDestroyed() {
+        return this.destroyed;
     }
 }
