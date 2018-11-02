@@ -1,5 +1,7 @@
 package edu.austral.starship;
 
+import edu.austral.starship.base.collision.CollisionEngine;
+import edu.austral.starship.base.collision.ShapedObject;
 import edu.austral.starship.base.container.DrawableContainer;
 import edu.austral.starship.base.container.GameObjectContainer;
 import edu.austral.starship.base.container.ShapedObjectContainer;
@@ -7,6 +9,7 @@ import edu.austral.starship.base.factory.SpaceshipFactory;
 import edu.austral.starship.base.framework.GameFramework;
 import edu.austral.starship.base.framework.ImageLoader;
 import edu.austral.starship.base.framework.WindowSettings;
+import edu.austral.starship.base.game.BoundingBox;
 import edu.austral.starship.base.game.GameObject;
 import edu.austral.starship.base.game.Player;
 import edu.austral.starship.base.game.Spaceship;
@@ -31,47 +34,43 @@ public class CustomGameFramework implements GameFramework {
 
     private SpaceshipFactory spaceshipFactory;
 
+    private CollisionEngine<ShapedObject> engine;
+
     // This references to containers are important
     private DrawableContainer drawables = new DrawableContainer();
 
     private ShapedObjectContainer collisionables = new ShapedObjectContainer();
 
     private GameObjectContainer objects = new GameObjectContainer();
+
+    private BoundingBox box = new BoundingBox(500, 500);
     
     @Override
     public void setup(WindowSettings windowsSettings, ImageLoader imageLoader) {
         windowsSettings
             .setSize(500, 500);
-        
-        //drawables = new ArrayList<>();
+
+        // this responsibilities should be delegated to another class
+
+        engine = new CollisionEngine<>();
 
         spaceshipFactory = new SpaceshipFactory(collisionables, objects, drawables);
 
         PImage image = imageLoader.load("spaceship.png");
 
         Player player1 = new Player();
+        Player player2 = new Player();
 
         Spaceship object = spaceshipFactory.createSpaceship(player1, Vector2.vector(150, 150), image);
-        //Placeable element = new UIElement(Vector2.vector(10, 10));
-        //Spaceship object = new Spaceship(10, Vector2.vector(150, 150));
-        //object2 = object;
-        //PlaceableObject element = new PlaceableObject(object);
+        Spaceship object2 = spaceshipFactory.createSpaceship(player2, Vector2.vector(300, 300), image);
 
-        // acceleration values should be way smaller
         Action moveW = new Move(object, Vector2.vector(0, -0.05f));
-        //Action moveA = new Move(object, Vector2.vector(-0.05f, 0));
         Action moveS = new Move(object, Vector2.vector(0, 0.05f));
-        //Action moveD = new Move(object, Vector2.vector(0.05f, 0));
-
         Action rotateCW = new Rotate(object, 0.1f);
         Action rotateCCW = new Rotate(object, -0.1f);
 
-        // Check how to map keys to keyCodes better (or work directly with keys).
         KeyBind keyW = new KeyBind(moveW, true, 87);
-        //KeyBind keyA = new KeyBind(moveA, true, 65);
         KeyBind keyS = new KeyBind(moveS, true, 83);
-        //KeyBind keyD = new KeyBind(moveD, true, 68);
-
         KeyBind keyD = new KeyBind(rotateCW, true, 68);
         KeyBind keyA = new KeyBind(rotateCCW, true, 65);
 
@@ -81,32 +80,43 @@ public class CustomGameFramework implements GameFramework {
         interpreter.addKeyBind(keyS);
         interpreter.addKeyBind(keyD);
 
-        //interpreter.addKeyBind(keyE);
-        //interpreter.addKeyBind(keyQ);
+        Action moveUp = new Move(object2, Vector2.vector(0, -0.05f));
+        Action moveDown = new Move(object2, Vector2.vector(0, 0.05f));
+        Action rotateCWRight = new Rotate(object2, 0.1f);
+        Action rotateCCWLeft = new Rotate(object2, -0.1f);
 
-        /*
-        Drawable drawable = new Label(element, "Executive producer Eduardo Lalor", Vector2.vector(0, 0));
-        Drawable drawable2 = new Label(element, "Music by Eduardo Lalor", Vector2.vector(0, 30));
-        Drawable drawable3 = new Label(element, "Special thanks to Eduardo Lalor", Vector2.vector(0, 60));
-        drawables.add(drawable);
-        drawables.add(drawable2);
-        drawables.add(drawable3);
-        */
-        //Drawable drawable = new Sprite(image, element, 128, 128);
-        //drawables.add(drawable);
+        KeyBind keyUp = new KeyBind(moveUp, true, 38);
+        KeyBind keyDown = new KeyBind(moveDown, true, 40);
+        KeyBind keyRight = new KeyBind(rotateCWRight, true, 39);
+        KeyBind keyLeft = new KeyBind(rotateCCWLeft, true, 37);
+
+        interpreter.addKeyBind(keyUp);
+        interpreter.addKeyBind(keyDown);
+        interpreter.addKeyBind(keyRight);
+        interpreter.addKeyBind(keyLeft);
     }
 
     // Should draw method deal with the logic of the keys being pressed?
     // If so the name should be changed to something more representative of its new responsibility.
     @Override
     public void draw(PGraphics graphics, float timeSinceLastDraw, Set<Integer> keySet) {
+
+        // Should these things be delegated to some other class?
+
         for (Drawable drawable : drawables.getDrawables()) {
             drawable.draw(graphics);
         }
 
         for (GameObject object : objects.getObjects()) {
+            box.checkBounds(object);
             object.updatePosition();
         }
+
+        for (ShapedObject collisionable : collisionables.getObjects()) {
+            collisionable.update();
+        }
+
+        engine.checkCollisions(collisionables.getObjects());
 
         //object2.updatePosition();
 

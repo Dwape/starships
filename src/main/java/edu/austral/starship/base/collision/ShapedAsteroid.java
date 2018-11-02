@@ -10,13 +10,19 @@ public class ShapedAsteroid extends ShapedObject{
 
     private Asteroid asteroid;
 
-    public ShapedAsteroid(Asteroid asteroid, Shape shape) {
+    public ShapedAsteroid(Asteroid asteroid, Shape shape, float width, float height) {
         this.asteroid = asteroid;
         super.shape = shape;
+        super.width = width;
+        super.height = height;
     }
 
     public void accept(Visitor visitor) {
         visitor.visitAsteroid(this.asteroid);
+    }
+
+    public void update() {
+
     }
 
     public void visitAsteroid(Asteroid asteroid) {

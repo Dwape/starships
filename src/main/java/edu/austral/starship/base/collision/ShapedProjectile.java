@@ -10,13 +10,19 @@ public class ShapedProjectile extends ShapedObject{
 
     private Projectile projectile;
 
-    public ShapedProjectile(Projectile projectile, Shape shape) {
+    public ShapedProjectile(Projectile projectile, Shape shape, float width, float height) {
         this.projectile = projectile;
         super.shape = shape;
+        super.width = width;
+        super.height = height;
     }
 
     public void accept(Visitor visitor) {
         visitor.visitProjectile(this.projectile);
+    }
+
+    public void update() {
+
     }
 
     public void visitAsteroid(Asteroid asteroid) {

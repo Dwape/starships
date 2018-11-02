@@ -1,6 +1,7 @@
 package edu.austral.starship.base.factory;
 
 import edu.austral.starship.base.collision.ShapedObject;
+import edu.austral.starship.base.collision.ShapedSpaceship;
 import edu.austral.starship.base.container.DrawableContainer;
 import edu.austral.starship.base.container.GameObjectContainer;
 import edu.austral.starship.base.container.ShapedObjectContainer;
@@ -13,6 +14,8 @@ import edu.austral.starship.base.view.PlaceableObject;
 import edu.austral.starship.base.view.Sprite;
 import processing.core.PImage;
 
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.util.UUID;
 
 
@@ -32,11 +35,24 @@ public class SpaceshipFactory extends Factory{
 
         PlaceableObject element = new PlaceableObject(object);
 
-        Drawable drawable = new Sprite(image, element, 128, 128);
+        int width = 128;
+
+        int height = 128;
+
+        Drawable drawable = new Sprite(image, element, width, height);
 
         drawables.addDrawable(drawable, id);
 
         //ShapedObject collisionable = new ShapedObject(); //TODO
+
+        // Should this be done here or in every iteration?
+        //Vector2 position = object.getPosition().substract(Vector2.vector(width/2, height/2));
+
+        Shape rectangle = new Rectangle2D.Float(object.getPosition().getX(), object.getPosition().getY(), width, height); // The shape could be more sophisticated
+
+        ShapedSpaceship collisionable = new ShapedSpaceship(object, rectangle, width, height);
+
+        collisionables.addObject(collisionable, id);
 
         return object;
     }
