@@ -37,4 +37,12 @@ public class Spaceship extends GameObject implements Movable, Rotatable {
     public void rotate(float factor) {
         this.orientation += factor;
     }
+
+    public void leftPerimeter() {
+
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
 }

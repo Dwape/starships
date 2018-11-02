@@ -5,14 +5,12 @@ import edu.austral.starship.base.collision.ShapedObject;
 import edu.austral.starship.base.container.DrawableContainer;
 import edu.austral.starship.base.container.GameObjectContainer;
 import edu.austral.starship.base.container.ShapedObjectContainer;
+import edu.austral.starship.base.factory.ProjectileFactory;
 import edu.austral.starship.base.factory.SpaceshipFactory;
 import edu.austral.starship.base.framework.GameFramework;
 import edu.austral.starship.base.framework.ImageLoader;
 import edu.austral.starship.base.framework.WindowSettings;
-import edu.austral.starship.base.game.BoundingBox;
-import edu.austral.starship.base.game.GameObject;
-import edu.austral.starship.base.game.Player;
-import edu.austral.starship.base.game.Spaceship;
+import edu.austral.starship.base.game.*;
 import edu.austral.starship.base.input.*;
 import edu.austral.starship.base.vector.Vector2;
 import edu.austral.starship.base.view.*;
@@ -94,6 +92,19 @@ public class CustomGameFramework implements GameFramework {
         interpreter.addKeyBind(keyDown);
         interpreter.addKeyBind(keyRight);
         interpreter.addKeyBind(keyLeft);
+
+        ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables);
+        Weapon weapon = new Weapon(projectileFactory, object, 1, 30, image);
+        Weapon weapon2 = new Weapon(projectileFactory, object2, 1, 30, image);
+
+        Action shoot1 = new Shoot(weapon);
+        Action shoot2 = new Shoot(weapon2);
+
+        KeyBind keyShoot1 = new KeyBind(shoot1, true, 69);
+        KeyBind keyShoot2 = new KeyBind(shoot2, true, 16);
+
+        interpreter.addKeyBind(keyShoot1);
+        interpreter.addKeyBind(keyShoot2);
     }
 
     // Should draw method deal with the logic of the keys being pressed?

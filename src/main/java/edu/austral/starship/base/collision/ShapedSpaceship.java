@@ -44,6 +44,5 @@ public class ShapedSpaceship extends ShapedObject{
     }
 
     public void visitSpaceship(Spaceship spaceship) {
-        System.out.println(spaceship.getId() + " crashed!");
     }
 }

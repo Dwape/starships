@@ -48,7 +48,7 @@ public class SpaceshipFactory extends Factory{
         // Should this be done here or in every iteration?
         //Vector2 position = object.getPosition().substract(Vector2.vector(width/2, height/2));
 
-        Shape rectangle = new Rectangle2D.Float(object.getPosition().getX(), object.getPosition().getY(), width, height); // The shape could be more sophisticated
+        Shape rectangle = new Rectangle2D.Float(object.getPosition().getX() - width/2, object.getPosition().getY() - height/2, width, height); // The shape could be more sophisticated
 
         ShapedSpaceship collisionable = new ShapedSpaceship(object, rectangle, width, height);
 

@@ -28,5 +28,6 @@ public class BoundingBox {
         }
 
         object.stop(stop);
+        object.leftPerimeter();
     }
 }
