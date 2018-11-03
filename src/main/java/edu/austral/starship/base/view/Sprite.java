@@ -27,14 +27,14 @@ public class Sprite implements Drawable{
     public void draw(PGraphics graphics) {
 
         // REMOVE
-
+        /*
         graphics.pushMatrix();
         graphics.rectMode(PConstants.CENTER);
         graphics.translate(placeable.getPosition().getX(), placeable.getPosition().getY());
         graphics.rotate(placeable.getOrientation());
         graphics.rect(0, 0, width, height);
         graphics.popMatrix();
-
+        */
         // END REMOVE
 
         graphics.pushMatrix();

@@ -41,13 +41,14 @@ public class ShapedProjectile extends ShapedObject{
     }
 
     public void visitAsteroid(Asteroid asteroid) {
-
+        System.out.println("Crashed with asteroid");
+        this.projectile.destroy();
     }
 
     public void visitProjectile(Projectile projectile) {
     }
 
     public void visitSpaceship(Spaceship spaceship) {
-        System.out.println("Crashed");
+        this.projectile.destroy();
     }
 }

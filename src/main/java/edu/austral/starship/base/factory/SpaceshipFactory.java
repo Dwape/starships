@@ -29,7 +29,7 @@ public class SpaceshipFactory extends Factory{
 
         String id = UUID.randomUUID().toString();
 
-        Spaceship object = new Spaceship(id, initialPosition, player, 100, 3);
+        Spaceship object = new Spaceship(id, initialPosition, player, 100, 100);
 
         objects.addObject(object, id);
 

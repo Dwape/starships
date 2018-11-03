@@ -7,9 +7,9 @@ import edu.austral.starship.base.vector.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Spaceship extends GameObject implements Movable, Rotatable {
+public class Spaceship extends GameObject implements Movable, Rotatable, Damageable {
 
-    private int lives;
+    private int health;
 
     private Player player;
 
@@ -17,12 +17,12 @@ public class Spaceship extends GameObject implements Movable, Rotatable {
 
     private List<Weapon> weapons;
 
-    public Spaceship(String id, Vector2 position, Player player, int pointValue, int lives) {
+    public Spaceship(String id, Vector2 position, Player player, int pointValue, int health) {
         super.id = id;
         super.position = position;
         super.velocity = Vector2.vector(0, 0);
         this.player = player;
-        this.lives = lives;
+        this.health = health;
         this.pointValue = pointValue;
         super.destroyed = false;
         this.weapons = new ArrayList<>();
@@ -33,6 +33,7 @@ public class Spaceship extends GameObject implements Movable, Rotatable {
         for (Weapon weapon : weapons) {
             weapon.update();
         }
+        if (health <= 0) destroy();
     }
 
     public void accelerate(Vector2 vector) {
@@ -44,7 +45,6 @@ public class Spaceship extends GameObject implements Movable, Rotatable {
     }
 
     public void leftPerimeter() {
-
     }
 
     public Player getPlayer() {
@@ -53,5 +53,9 @@ public class Spaceship extends GameObject implements Movable, Rotatable {
 
     public void addWeapon(Weapon weapon) {
         this.weapons.add(weapon);
+    }
+
+    public void damage(int health) {
+        this.health -= health;
     }
 }

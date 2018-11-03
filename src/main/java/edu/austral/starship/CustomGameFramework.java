@@ -5,6 +5,7 @@ import edu.austral.starship.base.collision.ShapedObject;
 import edu.austral.starship.base.container.DrawableContainer;
 import edu.austral.starship.base.container.GameObjectContainer;
 import edu.austral.starship.base.container.ShapedObjectContainer;
+import edu.austral.starship.base.factory.AsteroidFactory;
 import edu.austral.starship.base.factory.Destroyer;
 import edu.austral.starship.base.factory.ProjectileFactory;
 import edu.austral.starship.base.factory.SpaceshipFactory;
@@ -33,6 +34,10 @@ public class CustomGameFramework implements GameFramework {
 
     private SpaceshipFactory spaceshipFactory;
 
+    private AsteroidFactory asteroidFactory;
+
+    private AsteroidSpawner asteroidSpawner;
+
     private CollisionEngine<ShapedObject> engine;
 
     // This references to containers are important
@@ -59,7 +64,11 @@ public class CustomGameFramework implements GameFramework {
 
         spaceshipFactory = new SpaceshipFactory(collisionables, objects, drawables);
 
+        asteroidFactory = new AsteroidFactory(collisionables, objects, drawables);
+
         PImage image = imageLoader.load("spaceship.png");
+
+        asteroidSpawner = new AsteroidSpawner(asteroidFactory, 50, 2, 100, image);
 
         Player player1 = new Player();
         Player player2 = new Player();
@@ -99,8 +108,8 @@ public class CustomGameFramework implements GameFramework {
         interpreter.addKeyBind(keyLeft);
 
         ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables);
-        Weapon weapon = new Weapon(projectileFactory, object, 1, 150, image);
-        Weapon weapon2 = new Weapon(projectileFactory, object2, 1, 150, image);
+        Weapon weapon = new Weapon(projectileFactory, object, 10, 150, image);
+        Weapon weapon2 = new Weapon(projectileFactory, object2, 10, 150, image);
 
         object.addWeapon(weapon);
         object2.addWeapon(weapon2);
@@ -143,12 +152,13 @@ public class CustomGameFramework implements GameFramework {
 
         //object2.updatePosition();
 
-        //graphics.ellipse(150, 150, 5, 5); //REMOVE
-
         // Should this be done here?
         for (Integer keyCode : keySet) {
             interpreter.interpret(keyCode);
         }
+
+        asteroidSpawner.update();
+        asteroidSpawner.create();
     }
 
     // keyPressed has already been added to the keySet, what else should we do now?

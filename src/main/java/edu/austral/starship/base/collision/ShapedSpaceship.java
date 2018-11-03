@@ -37,10 +37,10 @@ public class ShapedSpaceship extends ShapedObject{
     }
 
     public void visitProjectile(Projectile projectile) {
-        spaceship.destroy();
+        spaceship.damage(projectile.getDamage());
     }
 
     public void visitSpaceship(Spaceship spaceship) {
-        System.out.println("crashed");
+        //System.out.println("crashed");
     }
 }

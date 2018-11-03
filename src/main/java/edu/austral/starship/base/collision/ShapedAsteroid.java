@@ -5,6 +5,7 @@ import edu.austral.starship.base.game.Projectile;
 import edu.austral.starship.base.game.Spaceship;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 public class ShapedAsteroid extends ShapedObject{
 
@@ -22,7 +23,7 @@ public class ShapedAsteroid extends ShapedObject{
     }
 
     public void update() {
-
+        super.shape = new Rectangle2D.Float(asteroid.getPosition().getX() - width/2, asteroid.getPosition().getY() - height/2, width, height);
     }
 
     public void visitAsteroid(Asteroid asteroid) {
@@ -30,7 +31,8 @@ public class ShapedAsteroid extends ShapedObject{
     }
 
     public void visitProjectile(Projectile projectile) {
-
+        System.out.println("Crashed with projectile");
+        asteroid.damage(projectile.getDamage());
     }
 
     public void visitSpaceship(Spaceship spaceship) {
