@@ -2,7 +2,7 @@ package edu.austral.starship.base.game;
 
 import edu.austral.starship.base.vector.Vector2;
 
-public class Asteroid extends GameObject implements Damageable {
+public class Asteroid extends GameObject implements Damageable, Scoreable {
 
     private int health;
 
@@ -29,11 +29,14 @@ public class Asteroid extends GameObject implements Damageable {
     }
 
     public void leftPerimeter() {
-        //System.out.println("What?");
         this.destroy();
     }
 
     public float getSize() {
         return size;
+    }
+
+    public int returnPoints() {
+        return this.pointValue;
     }
 }

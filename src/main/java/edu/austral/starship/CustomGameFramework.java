@@ -23,6 +23,7 @@ import processing.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class CustomGameFramework implements GameFramework {
     
@@ -122,6 +123,21 @@ public class CustomGameFramework implements GameFramework {
 
         interpreter.addKeyBind(keyShoot1);
         interpreter.addKeyBind(keyShoot2);
+
+        Valuable score1 = new Score(player1);
+        Valuable score2 = new Score(player2);
+
+        Placeable spot1 = new UIElement(Vector2.vector(50, 50));
+        Placeable spot2 = new UIElement(Vector2.vector(50, 70));
+
+        Drawable label1 = new Label(spot1, "Player 1: ", "", score1, Vector2.vector(0,0));
+        Drawable label2 = new Label(spot2, "Player 2: ", "", score2, Vector2.vector(0,0));
+
+        String id1 = UUID.randomUUID().toString();
+        String id2 = UUID.randomUUID().toString();
+
+        drawables.addDrawable(label1, id1);
+        drawables.addDrawable(label2, id2);
     }
 
     // Should draw method deal with the logic of the keys being pressed?

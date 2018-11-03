@@ -5,21 +5,42 @@ import processing.core.PGraphics;
 
 public class Label implements Drawable{
 
-    public Placeable placeable; //we could add a movable ai element (maybe)
+    private Placeable placeable; //we could add a movable ai element (maybe)
 
-    public String text;
+    private String beginning;
 
-    public Vector2 offset; //this would allow to write text over a spaceship, for example.
+    private String end;
 
-    public Label(Placeable placeable, String text, Vector2 offset) {
+    private Valuable valuable;
+
+    private Vector2 offset; //this would allow to write text over a spaceship, for example.
+
+    public Label(Placeable placeable, String beginning, String end, Valuable valuable, Vector2 offset) {
         this.placeable = placeable;
-        this.text = text;
+        this.beginning = beginning;
+        this.end = end;
         this.offset = offset;
+        this.valuable = valuable;
+    }
+
+    public Label(Placeable placeable, String beginning, Vector2 offset) {
+        this.placeable = placeable;
+        this.beginning = beginning;
+        this.end = "";
+        this.offset = offset;
+        this.valuable = new NoValue();
     }
 
     public void draw(PGraphics graphics) {
         Vector2 position = placeable.getPosition();
         Vector2 newPosition = position.add(offset);
-        graphics.text(text, newPosition.getX(), newPosition.getY());
+        graphics.text(beginning + valuable.getValue() + end, newPosition.getX(), newPosition.getY());
+    }
+
+    private class NoValue implements Valuable {
+
+        public String getValue() {
+            return "";
+        }
     }
 }

@@ -7,4 +7,8 @@ public class Player {
     public void addPoints(int points) {
         this.points += points;
     }
+
+    public int getPoints() {
+        return this.points;
+    }
 }

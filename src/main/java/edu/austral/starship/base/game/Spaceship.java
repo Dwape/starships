@@ -7,7 +7,7 @@ import edu.austral.starship.base.vector.Vector2;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Spaceship extends GameObject implements Movable, Rotatable, Damageable {
+public class Spaceship extends GameObject implements Movable, Rotatable, Damageable, Scoreable {
 
     private int health;
 
@@ -57,5 +57,9 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
 
     public void damage(int health) {
         this.health -= health;
+    }
+
+    public int returnPoints() {
+        return this.pointValue;
     }
 }

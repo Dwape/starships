@@ -17,8 +17,10 @@ public abstract class Projectile extends GameObject{
     }
 
     public void resolveCollision(Scoreable scoreable) {
-
+        awardPoints(scoreable);
     }
+
+    public abstract void awardPoints(Scoreable scoreable);
 
     public int getDamage() {
         return damage;
