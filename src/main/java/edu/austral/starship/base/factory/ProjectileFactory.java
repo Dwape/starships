@@ -15,6 +15,7 @@ import processing.core.PImage;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.util.UUID;
 
 public class ProjectileFactory extends Factory{
@@ -40,9 +41,13 @@ public class ProjectileFactory extends Factory{
 
         drawables.addDrawable(drawable, id);
 
-        Shape ellipse = new Ellipse2D.Float(object.getPosition().getX() - size/2, object.getPosition().getY() - size/2, size, size);
+        //Shape ellipse = new Ellipse2D.Float(object.getPosition().getX() - size/2, object.getPosition().getY() - size/2, size, size);
 
-        ShapedProjectile collisionable = new ShapedProjectile(object, ellipse, size, size);
+        //ShapedProjectile collisionable = new ShapedProjectile(object, ellipse, size, size);
+
+        Shape rectangle = new Rectangle2D.Float(object.getPosition().getX() - size/2, object.getPosition().getY() - size/2, size, size);
+
+        ShapedProjectile collisionable = new ShapedProjectile(object, rectangle, size, size);
 
         collisionables.addObject(collisionable, id);
 

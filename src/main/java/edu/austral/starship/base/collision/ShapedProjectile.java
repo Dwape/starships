@@ -7,6 +7,7 @@ import edu.austral.starship.base.game.Spaceship;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 
 public class ShapedProjectile extends ShapedObject{
 
@@ -25,11 +26,18 @@ public class ShapedProjectile extends ShapedObject{
 
     // This could be changed to use the previous shape (In case we want projectiles to have different shapes)
     public void update() {
-        Shape newShape = new Ellipse2D.Float(0 - width/2, 0 - height/2, width, height);
+        //Shape newShape = new Ellipse2D.Float(0 - width/2, 0 - height/2, width, height);
+
+        /*
+        Shape newShape = new Rectangle2D.Float(0 - width/2, 0 - height/2, width, height);
         AffineTransform tx = new AffineTransform();
-        tx.translate(projectile.getPosition().getX() - width/2, projectile.getPosition().getY() - width/2);
-        tx.rotate(projectile.getOrientation());
+        tx.translate(projectile.getPosition().getX() - width/2, projectile.getPosition().getY() - height/2);
+        //tx.rotate(projectile.getOrientation());
         super.shape = tx.createTransformedShape(newShape);
+        */
+
+        // For some reason the collider is not in the right place
+        super.shape = new Rectangle2D.Float(projectile.getPosition().getX() - width/2, projectile.getPosition().getY() - height/2, width, height);
     }
 
     public void visitAsteroid(Asteroid asteroid) {
@@ -37,10 +45,9 @@ public class ShapedProjectile extends ShapedObject{
     }
 
     public void visitProjectile(Projectile projectile) {
-
     }
 
     public void visitSpaceship(Spaceship spaceship) {
-
+        System.out.println("Crashed");
     }
 }

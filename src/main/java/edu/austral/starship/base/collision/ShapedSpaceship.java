@@ -24,15 +24,12 @@ public class ShapedSpaceship extends ShapedObject{
         visitor.visitSpaceship(this.spaceship);
     }
 
-    // We need to rotate the shape
     public void update() {
         Shape newShape = new Rectangle2D.Float(0 - width/2, 0 - height/2, width, height);
         AffineTransform tx = new AffineTransform();
-        tx.translate(spaceship.getPosition().getX() - width/2, spaceship.getPosition().getY() - width/2);
+        tx.translate(spaceship.getPosition().getX(), spaceship.getPosition().getY());
         tx.rotate(spaceship.getOrientation());
         super.shape = tx.createTransformedShape(newShape);
-        //shape = tx.createTransformedShape(newShape);
-        //super.shape = new Rectangle2D.Float(spaceship.getPosition().getX() - width/2, spaceship.getPosition().getY() - width/2, width, height);
     }
 
     public void visitAsteroid(Asteroid asteroid) {
@@ -40,9 +37,10 @@ public class ShapedSpaceship extends ShapedObject{
     }
 
     public void visitProjectile(Projectile projectile) {
-
+        spaceship.destroy();
     }
 
     public void visitSpaceship(Spaceship spaceship) {
+        System.out.println("crashed");
     }
 }
