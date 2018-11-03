@@ -18,11 +18,14 @@ import java.util.UUID;
 
 public class AsteroidFactory extends Factory{
 
-    public AsteroidFactory(ShapedObjectContainer collisionables, GameObjectContainer objects, DrawableContainer drawables) {
+    private PImage image;
+
+    public AsteroidFactory(ShapedObjectContainer collisionables, GameObjectContainer objects, DrawableContainer drawables, PImage image) {
         super(collisionables, objects, drawables);
+        this.image = image;
     }
 
-    public Asteroid createAsteroid(Vector2 initialPosition, Vector2 initialVelocity, float size, PImage image) {
+    public Asteroid createAsteroid(Vector2 initialPosition, Vector2 initialVelocity, float size) {
 
         String id = UUID.randomUUID().toString();
 

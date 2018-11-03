@@ -3,7 +3,6 @@ package edu.austral.starship.base.collision;
 import edu.austral.starship.base.game.Asteroid;
 import edu.austral.starship.base.game.Projectile;
 import edu.austral.starship.base.game.Spaceship;
-import edu.austral.starship.base.vector.Vector2;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -33,7 +32,7 @@ public class ShapedSpaceship extends ShapedObject{
     }
 
     public void visitAsteroid(Asteroid asteroid) {
-
+        spaceship.damage((int) asteroid.getSize()/5); // We need to balance damage.
     }
 
     public void visitProjectile(Projectile projectile) {

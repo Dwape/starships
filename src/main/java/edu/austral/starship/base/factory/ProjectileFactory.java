@@ -20,11 +20,14 @@ import java.util.UUID;
 
 public class ProjectileFactory extends Factory{
 
-    public ProjectileFactory(ShapedObjectContainer collisionables, GameObjectContainer objects, DrawableContainer drawables) {
+    private PImage image;
+
+    public ProjectileFactory(ShapedObjectContainer collisionables, GameObjectContainer objects, DrawableContainer drawables, PImage image) {
         super(collisionables, objects, drawables);
+        this.image = image;
     }
 
-    public Projectile createProjectile(Player player, Vector2 initialPosition, Vector2 velocity, int damage, float lifespan, PImage image) {
+    public Projectile createProjectile(Player player, Vector2 initialPosition, Vector2 velocity, int damage, float lifespan) {
 
         String id = UUID.randomUUID().toString();
 

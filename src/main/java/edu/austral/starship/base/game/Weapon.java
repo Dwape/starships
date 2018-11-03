@@ -8,17 +8,15 @@ public class Weapon {
 
     private ProjectileFactory factory;
     private Spaceship spaceship;
-    private PImage image;
     private int damage;
     private float lifespan;
     private float projectileSpeed;
     private int delay;
     private int delayCounter;
 
-    public Weapon(ProjectileFactory factory, Spaceship spaceship, int damage, float lifespan, PImage image) {
+    public Weapon(ProjectileFactory factory, Spaceship spaceship, int damage, float lifespan) {
         this.factory = factory;
         this.spaceship = spaceship;
-        this.image = image;
         this.damage = damage;
         this.lifespan = lifespan;
         this.projectileSpeed = 2;
@@ -36,7 +34,7 @@ public class Weapon {
             // We could have the speed of the bullet as an attribute of weapon
             Vector2 velocity = Vector2.vectorFromModule(projectileSpeed, (float) (spaceship.getOrientation() - Math.PI/2));
             //velocity = velocity.add(spaceship.getVelocity());
-            factory.createProjectile(spaceship.getPlayer(), spawnPosition, velocity, damage, lifespan, image);
+            factory.createProjectile(spaceship.getPlayer(), spawnPosition, velocity, damage, lifespan);
 
             this.delayCounter = 0;
         }

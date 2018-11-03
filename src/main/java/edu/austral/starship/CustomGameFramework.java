@@ -64,11 +64,11 @@ public class CustomGameFramework implements GameFramework {
 
         spaceshipFactory = new SpaceshipFactory(collisionables, objects, drawables);
 
-        asteroidFactory = new AsteroidFactory(collisionables, objects, drawables);
-
         PImage image = imageLoader.load("spaceship.png");
 
-        asteroidSpawner = new AsteroidSpawner(asteroidFactory, 50, 2, 100, image);
+        asteroidFactory = new AsteroidFactory(collisionables, objects, drawables, image);
+
+        asteroidSpawner = new AsteroidSpawner(asteroidFactory, 50, 2, 50, Vector2.vector(500, 500));
 
         Player player1 = new Player();
         Player player2 = new Player();
@@ -107,9 +107,9 @@ public class CustomGameFramework implements GameFramework {
         interpreter.addKeyBind(keyRight);
         interpreter.addKeyBind(keyLeft);
 
-        ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables);
-        Weapon weapon = new Weapon(projectileFactory, object, 10, 150, image);
-        Weapon weapon2 = new Weapon(projectileFactory, object2, 10, 150, image);
+        ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables, image);
+        Weapon weapon = new Weapon(projectileFactory, object, 10, 150);
+        Weapon weapon2 = new Weapon(projectileFactory, object2, 10, 150);
 
         object.addWeapon(weapon);
         object2.addWeapon(weapon2);

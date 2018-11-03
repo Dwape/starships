@@ -31,11 +31,11 @@ public class ShapedAsteroid extends ShapedObject{
     }
 
     public void visitProjectile(Projectile projectile) {
-        System.out.println("Crashed with projectile");
+        //System.out.println("Crashed with projectile");
         asteroid.damage(projectile.getDamage());
     }
 
     public void visitSpaceship(Spaceship spaceship) {
-
+        asteroid.destroy();
     }
 }

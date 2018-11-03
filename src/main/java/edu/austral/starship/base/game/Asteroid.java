@@ -32,4 +32,8 @@ public class Asteroid extends GameObject implements Damageable {
         //System.out.println("What?");
         this.destroy();
     }
+
+    public float getSize() {
+        return size;
+    }
 }
