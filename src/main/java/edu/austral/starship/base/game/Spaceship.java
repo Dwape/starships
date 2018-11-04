@@ -23,6 +23,8 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
 
     private float width;
 
+    private int switchCounter;
+
     public Spaceship(String id, Vector2 position, Player player, int pointValue, int health, float width, float height) {
         super.id = id;
         super.position = position;
@@ -35,6 +37,7 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
         this.selectedWeapon = 0;
         this.width = width;
         this.height = height;
+        this.switchCounter = 11;
     }
 
     public void update() {
@@ -43,6 +46,7 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
             weapon.update();
         }
         if (health <= 0) destroy();
+        switchCounter++;
     }
 
     public void accelerate(Vector2 vector) {
@@ -79,7 +83,10 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
 
     public void changeWeapon() {
         // Check if this works.
-        selectedWeapon = Math.floorMod(selectedWeapon+1, weapons.size());
+        if (switchCounter > 10) {
+            selectedWeapon = Math.floorMod(selectedWeapon+1, weapons.size());
+            switchCounter = 0;
+        }
     }
 
     public float getWidth() {
