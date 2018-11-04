@@ -26,22 +26,13 @@ import java.util.Set;
 import java.util.UUID;
 
 public class CustomGameFramework implements GameFramework {
-    
-    //private List<Drawable> drawables;
-
-    //private GameObject object2; //REMOVE
 
     private InputInterpreter interpreter;
-
-    private SpaceshipFactory spaceshipFactory;
-
-    private AsteroidFactory asteroidFactory;
 
     private AsteroidSpawner asteroidSpawner;
 
     private CollisionEngine<ShapedObject> engine;
 
-    // This references to containers are important
     private DrawableContainer drawables = new DrawableContainer();
 
     private ShapedObjectContainer collisionables = new ShapedObjectContainer();
@@ -51,120 +42,60 @@ public class CustomGameFramework implements GameFramework {
     private BoundingBox box = new BoundingBox(500, 500);
 
     private Destroyer destroyer;
+
+    private List<Spaceship> spaceships = new ArrayList<>();
     
     @Override
     public void setup(WindowSettings windowsSettings, ImageLoader imageLoader) {
         windowsSettings
-            .setSize(500, 500);
-
-        // this responsibilities should be delegated to another class
+            .setSize(500, 500)
+                .enableHighPixelDensity();
 
         destroyer = new Destroyer(drawables, collisionables, objects);
 
         engine = new CollisionEngine<>();
 
-        spaceshipFactory = new SpaceshipFactory(collisionables, objects, drawables);
-
-        PImage image = imageLoader.load("spaceship1.png");
+        SpaceshipFactory spaceshipFactory = new SpaceshipFactory(collisionables, objects, drawables);
 
         PImage asteroidImage = imageLoader.load("asteroid.png");
 
         PImage projectileImage = imageLoader.load("projectile.png");
 
-        asteroidFactory = new AsteroidFactory(collisionables, objects, drawables, asteroidImage);
+        AsteroidFactory asteroidFactory = new AsteroidFactory(collisionables, objects, drawables, asteroidImage);
 
         asteroidSpawner = new AsteroidSpawner(asteroidFactory, 50, 2, 50, Vector2.vector(500, 500));
 
-        Player player1 = new Player();
-        Player player2 = new Player();
-
-        Spaceship object = spaceshipFactory.createSpaceship(player1, Vector2.vector(150, 150), image, 128, 128);
-        Spaceship object2 = spaceshipFactory.createSpaceship(player2, Vector2.vector(300, 300), image, 128, 128);
-
-        Action moveW = new Move(object, Vector2.vector(0, -0.05f));
-        Action moveS = new Move(object, Vector2.vector(0, 0.05f));
-        Action rotateCW = new Rotate(object, 0.1f);
-        Action rotateCCW = new Rotate(object, -0.1f);
-
-        KeyBind keyW = new KeyBind(moveW, true, 87);
-        KeyBind keyS = new KeyBind(moveS, true, 83);
-        KeyBind keyD = new KeyBind(rotateCW, true, 68);
-        KeyBind keyA = new KeyBind(rotateCCW, true, 65);
-
         interpreter = new InputInterpreter();
-        interpreter.addKeyBind(keyW);
-        interpreter.addKeyBind(keyA);
-        interpreter.addKeyBind(keyS);
-        interpreter.addKeyBind(keyD);
 
-        Action moveUp = new Move(object2, Vector2.vector(0, -0.05f));
-        Action moveDown = new Move(object2, Vector2.vector(0, 0.05f));
-        Action rotateCWRight = new Rotate(object2, 0.1f);
-        Action rotateCCWLeft = new Rotate(object2, -0.1f);
+        int numberOfPlayers = 2;
 
-        KeyBind keyUp = new KeyBind(moveUp, true, 38);
-        KeyBind keyDown = new KeyBind(moveDown, true, 40);
-        KeyBind keyRight = new KeyBind(rotateCWRight, true, 39);
-        KeyBind keyLeft = new KeyBind(rotateCCWLeft, true, 37);
+        int[] keys1 = {87, 83, 68, 65, 69, 81};
+        PImage spaceship1Image = imageLoader.load("spaceship1.png");
+        Player player1 = createPlayer(spaceship1Image, Vector2.vector(150, 150), keys1, projectileImage, spaceshipFactory);
+        createScoreLabel(player1, Vector2.vector(30, 30), 1);
 
-        interpreter.addKeyBind(keyUp);
-        interpreter.addKeyBind(keyDown);
-        interpreter.addKeyBind(keyRight);
-        interpreter.addKeyBind(keyLeft);
+        int[] keys2 = {38, 40, 39, 37, 16, 18};
+        PImage spaceship2Image = imageLoader.load("spaceship2.png");
+        Player player2 = createPlayer(spaceship2Image, Vector2.vector(300, 300), keys2, projectileImage, spaceshipFactory);
+        createScoreLabel(player2, Vector2.vector(30, 50), 2);
 
-        ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables, projectileImage);
-        Weapon weapon = new Weapon(projectileFactory, object, 10, 150,2,10, 50);
-        Weapon weapon2 = new Weapon(projectileFactory, object2, 10, 150,2,10, 50);
+        /*
+        int[] keys3 = {80, 186, 222, 76, 219, 79};
+        PImage spaceship3Image = imageLoader.load("spaceship3.png");
+        Player player3 = createPlayer(spaceship3Image, Vector2.vector(150, 300), keys3, projectileImage, spaceshipFactory);
+        createScoreLabel(player3, Vector2.vector(30, 70), 3);
 
-        object.addWeapon(weapon);
-        object2.addWeapon(weapon2);
-
-        Action shoot1 = new Shoot(object);
-        Action shoot2 = new Shoot(object2);
-
-        KeyBind keyShoot1 = new KeyBind(shoot1, true, 69);
-        KeyBind keyShoot2 = new KeyBind(shoot2, true, 16);
-
-        interpreter.addKeyBind(keyShoot1);
-        interpreter.addKeyBind(keyShoot2);
-
-        Valuable score1 = new Score(player1);
-        Valuable score2 = new Score(player2);
-
-        Placeable spot1 = new UIElement(Vector2.vector(50, 50));
-        Placeable spot2 = new UIElement(Vector2.vector(50, 70));
-
-        Drawable label1 = new Label(spot1, "Player 1: ", "", score1, Vector2.vector(0,0));
-        Drawable label2 = new Label(spot2, "Player 2: ", "", score2, Vector2.vector(0,0));
-
-        String id1 = UUID.randomUUID().toString();
-        String id2 = UUID.randomUUID().toString();
-
-        drawables.addDrawable(label1, id1);
-        drawables.addDrawable(label2, id2);
-
-        Action switch1 = new SwitchWeapon(object);
-        Action switch2 = new SwitchWeapon(object2);
-
-        KeyBind keySwitch1 = new KeyBind(switch1, true, 81);
-        KeyBind keySwitch2 = new KeyBind(switch2, true, 18);
-
-        interpreter.addKeyBind(keySwitch1);
-        interpreter.addKeyBind(keySwitch2);
-
-        Weapon weapon3 = new Weapon(projectileFactory, object, 10, 150, 5, 10, 10);
-        Weapon weapon4 = new Weapon(projectileFactory, object2, 10, 150, 5, 10, 10);
-
-        object.addWeapon(weapon3);
-        object2.addWeapon(weapon4);
+        int[] keys4 = {38, 40, 39, 37, 16, 18};
+        PImage spaceship4Image = imageLoader.load("spaceship4.png");
+        Player player4 = createPlayer(spaceship4Image, Vector2.vector(300, 150), keys4, projectileImage, spaceshipFactory);
+        createScoreLabel(player4, Vector2.vector(30, 90), 4);
+        */
     }
 
     // Should draw method deal with the logic of the keys being pressed?
     // If so the name should be changed to something more representative of its new responsibility.
     @Override
     public void draw(PGraphics graphics, float timeSinceLastDraw, Set<Integer> keySet) {
-
-        // Should these things be delegated to some other class?
 
         for (Drawable drawable : drawables.getDrawables()) {
             drawable.draw(graphics);
@@ -185,20 +116,29 @@ public class CustomGameFramework implements GameFramework {
 
         engine.checkCollisions(collisionables.getObjects());
 
-        //object2.updatePosition();
-
-        // Should this be done here?
         for (Integer keyCode : keySet) {
             interpreter.interpret(keyCode);
         }
 
         asteroidSpawner.update();
         asteroidSpawner.create();
+
+        int playersAlive = 0;
+        for (Spaceship spaceship : spaceships) {
+            if (!spaceship.isDestroyed()) {
+                playersAlive++;
+            }
+        }
+        if (playersAlive == 0) {
+            drawables = new DrawableContainer();
+            collisionables = new ShapedObjectContainer();
+            objects = new GameObjectContainer();
+            for (int i=0; i <spaceships.size(); i++) {
+                createScoreLabel(spaceships.get(i).getPlayer(), Vector2.vector(210, 100 + 20*i), i+1);
+            }
+        }
     }
 
-    // keyPressed has already been added to the keySet, what else should we do now?
-    // Honestly it would make more sense to just handle all keyCodes in keySet once,
-    // instead of separately for the new key
     @Override
     public void keyPressed(KeyEvent event) {
 
@@ -207,5 +147,55 @@ public class CustomGameFramework implements GameFramework {
     @Override
     public void keyReleased(KeyEvent event) {
 
+    }
+
+    private Player createPlayer(PImage image, Vector2 initialPosition, int[] keys, PImage projectileImage, SpaceshipFactory factory) {
+        Player player = new Player();
+        Spaceship spaceship = factory.createSpaceship(player, initialPosition, image, 128, 128);
+
+        Action moveW = new Move(spaceship, Vector2.vector(0, -0.05f));
+        Action moveS = new Move(spaceship, Vector2.vector(0, 0.05f));
+        Action rotateCW = new Rotate(spaceship, 0.1f);
+        Action rotateCCW = new Rotate(spaceship, -0.1f);
+        Action shoot = new Shoot(spaceship);
+        Action switchWeapon = new SwitchWeapon(spaceship);
+
+        KeyBind keyW = new KeyBind(moveW, true, keys[0]);
+        KeyBind keyS = new KeyBind(moveS, true, keys[1]);
+        KeyBind keyD = new KeyBind(rotateCW, true, keys[2]);
+        KeyBind keyA = new KeyBind(rotateCCW, true, keys[3]);
+        KeyBind keyShoot = new KeyBind(shoot, true, keys[4]);
+        KeyBind keySwitch = new KeyBind(switchWeapon, true, keys[5]);
+
+        interpreter.addKeyBind(keyW);
+        interpreter.addKeyBind(keyS);
+        interpreter.addKeyBind(keyD);
+        interpreter.addKeyBind(keyA);
+        interpreter.addKeyBind(keyShoot);
+        interpreter.addKeyBind(keySwitch);
+
+        ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables, projectileImage);
+
+        Weapon weapon = new Weapon(projectileFactory, spaceship, 10, 150,2,10, 50);
+        Weapon weapon2 = new Weapon(projectileFactory, spaceship, 10, 150, 5, 10, 10);
+
+        spaceship.addWeapon(weapon);
+        spaceship.addWeapon(weapon2);
+
+        spaceships.add(spaceship);
+
+        return player;
+    }
+
+    private void createScoreLabel(Player player, Vector2 position, int playerNumber) {
+        Valuable score = new Score(player);
+
+        Placeable spot = new UIElement(position);
+
+        Drawable label = new Label(spot, "Player " + Integer.toString(playerNumber)+ ": ", "", score, Vector2.vector(0,0));
+
+        String id = UUID.randomUUID().toString();
+
+        drawables.addDrawable(label, id);
     }
 }
