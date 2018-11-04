@@ -11,7 +11,7 @@ public class Asteroid extends GameObject implements Damageable, Scoreable {
     private float size;
 
     public Asteroid(String id, Vector2 position, Vector2 velocity, float size) {
-        this.health = (int) size/10;
+        this.health = (int) size; // was size/10
         this.pointValue = health;
         this.size = size;
         super.position = position;
@@ -38,5 +38,9 @@ public class Asteroid extends GameObject implements Damageable, Scoreable {
 
     public int returnPoints() {
         return this.pointValue;
+    }
+
+    public int getHealth() {
+        return health;
     }
 }

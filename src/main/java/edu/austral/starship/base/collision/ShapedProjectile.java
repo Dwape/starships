@@ -41,7 +41,10 @@ public class ShapedProjectile extends ShapedObject{
     }
 
     public void visitAsteroid(Asteroid asteroid) {
-        this.projectile.resolveCollision(asteroid);
+        //this.projectile.resolveCollision(asteroid);
+        if (projectile.getDamage() >= asteroid.getHealth()) {
+            projectile.resolveCollision(asteroid);
+        }
         this.projectile.destroy();
     }
 
@@ -50,7 +53,10 @@ public class ShapedProjectile extends ShapedObject{
     }
 
     public void visitSpaceship(Spaceship spaceship) {
-        this.projectile.resolveCollision(spaceship);
+        //this.projectile.resolveCollision(spaceship);
+        if (projectile.getDamage() >= spaceship.getHealth()) {
+            projectile.resolveCollision(spaceship);
+        }
         this.projectile.destroy();
     }
 }

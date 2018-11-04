@@ -89,4 +89,8 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
     public float getHeight() {
         return height;
     }
+
+    public int getHealth() {
+        return health;
+    }
 }
