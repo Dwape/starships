@@ -8,15 +8,17 @@ import java.util.Random;
 public class AsteroidSpawner {
 
     private AsteroidFactory factory;
-    private float size;
+    private float minSize;
+    private float maxSize;
     private float speed;
     private int delay;
     private int delayCounter;
     private Vector2 box;
 
-    public AsteroidSpawner(AsteroidFactory factory, float size, float speed, int delay, Vector2 box) {
+    public AsteroidSpawner(AsteroidFactory factory, float minSize, float maxSize, float speed, int delay, Vector2 box) {
         this.factory = factory;
-        this.size = size;
+        this.maxSize = maxSize;
+        this.minSize = minSize;
         this.speed = speed;
         this.delay = delay;
         this.delayCounter = 0;
@@ -28,8 +30,11 @@ public class AsteroidSpawner {
             float width = box.getX();
             float height = box.getY();
 
-            double radius = Math.sqrt(Math.pow(width/2, 2) + Math.pow(height/2, 2)); //was *1.1
             Random r = new Random();
+
+            float size = (float) (minSize + (maxSize - minSize) * r.nextDouble());
+
+            double radius = Math.sqrt(Math.pow(width/2, 2) + Math.pow(height/2, 2)); //was *1.1
 
             int direction = 1;
             if(r.nextDouble() > 0.5) direction = -1;
@@ -47,7 +52,7 @@ public class AsteroidSpawner {
 
             Vector2 position = Vector2.vector((float) x1, (float) y1);
 
-            factory.createAsteroid(position, velocity, 50);
+            factory.createAsteroid(position, velocity, size);
 
             this.delayCounter = 0;
         }

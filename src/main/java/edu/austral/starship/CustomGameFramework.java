@@ -63,7 +63,7 @@ public class CustomGameFramework implements GameFramework {
 
         AsteroidFactory asteroidFactory = new AsteroidFactory(collisionables, objects, drawables, asteroidImage);
 
-        asteroidSpawner = new AsteroidSpawner(asteroidFactory, 50, 2, 50, Vector2.vector(500, 500));
+        asteroidSpawner = new AsteroidSpawner(asteroidFactory, 30, 100, 2, 50, Vector2.vector(500, 500));
 
         interpreter = new InputInterpreter();
 
