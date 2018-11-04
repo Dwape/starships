@@ -27,9 +27,11 @@ public class ProjectileFactory extends Factory{
         this.image = image;
     }
 
-    public Projectile createProjectile(Player player, Vector2 initialPosition, Vector2 velocity, int damage, float lifespan) {
+    public Projectile createProjectile(Player player, Vector2 initialPosition, Vector2 velocity, int damage, float lifespan, float projectileSize) {
 
         String id = UUID.randomUUID().toString();
+
+        int size = (int) projectileSize;
 
         //check lifespan value
         Projectile object = new PlayerProjectile(id, player, initialPosition, velocity, damage, lifespan);
@@ -37,8 +39,6 @@ public class ProjectileFactory extends Factory{
         objects.addObject(object, id);
 
         PlaceableObject element = new PlaceableObject(object);
-
-        int size = 10; // This should be a variable in projectile
 
         Drawable drawable = new Sprite(image, element, size, size);
 

@@ -65,17 +65,21 @@ public class CustomGameFramework implements GameFramework {
 
         spaceshipFactory = new SpaceshipFactory(collisionables, objects, drawables);
 
-        PImage image = imageLoader.load("spaceship.png");
+        PImage image = imageLoader.load("spaceship1.png");
 
-        asteroidFactory = new AsteroidFactory(collisionables, objects, drawables, image);
+        PImage asteroidImage = imageLoader.load("asteroid.png");
+
+        PImage projectileImage = imageLoader.load("projectile.png");
+
+        asteroidFactory = new AsteroidFactory(collisionables, objects, drawables, asteroidImage);
 
         asteroidSpawner = new AsteroidSpawner(asteroidFactory, 50, 2, 50, Vector2.vector(500, 500));
 
         Player player1 = new Player();
         Player player2 = new Player();
 
-        Spaceship object = spaceshipFactory.createSpaceship(player1, Vector2.vector(150, 150), image);
-        Spaceship object2 = spaceshipFactory.createSpaceship(player2, Vector2.vector(300, 300), image);
+        Spaceship object = spaceshipFactory.createSpaceship(player1, Vector2.vector(150, 150), image, 128, 128);
+        Spaceship object2 = spaceshipFactory.createSpaceship(player2, Vector2.vector(300, 300), image, 128, 128);
 
         Action moveW = new Move(object, Vector2.vector(0, -0.05f));
         Action moveS = new Move(object, Vector2.vector(0, 0.05f));
@@ -108,15 +112,15 @@ public class CustomGameFramework implements GameFramework {
         interpreter.addKeyBind(keyRight);
         interpreter.addKeyBind(keyLeft);
 
-        ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables, image);
-        Weapon weapon = new Weapon(projectileFactory, object, 10, 150);
-        Weapon weapon2 = new Weapon(projectileFactory, object2, 10, 150);
+        ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables, projectileImage);
+        Weapon weapon = new Weapon(projectileFactory, object, 10, 150,2,10, 50);
+        Weapon weapon2 = new Weapon(projectileFactory, object2, 10, 150,2,10, 50);
 
         object.addWeapon(weapon);
         object2.addWeapon(weapon2);
 
-        Action shoot1 = new Shoot(weapon);
-        Action shoot2 = new Shoot(weapon2);
+        Action shoot1 = new Shoot(object);
+        Action shoot2 = new Shoot(object2);
 
         KeyBind keyShoot1 = new KeyBind(shoot1, true, 69);
         KeyBind keyShoot2 = new KeyBind(shoot2, true, 16);
@@ -138,6 +142,21 @@ public class CustomGameFramework implements GameFramework {
 
         drawables.addDrawable(label1, id1);
         drawables.addDrawable(label2, id2);
+
+        Action switch1 = new SwitchWeapon(object);
+        Action switch2 = new SwitchWeapon(object2);
+
+        KeyBind keySwitch1 = new KeyBind(switch1, true, 81);
+        KeyBind keySwitch2 = new KeyBind(switch2, true, 18);
+
+        interpreter.addKeyBind(keySwitch1);
+        interpreter.addKeyBind(keySwitch2);
+
+        Weapon weapon3 = new Weapon(projectileFactory, object, 10, 150, 5, 10, 10);
+        Weapon weapon4 = new Weapon(projectileFactory, object2, 10, 150, 5, 10, 10);
+
+        object.addWeapon(weapon3);
+        object2.addWeapon(weapon4);
     }
 
     // Should draw method deal with the logic of the keys being pressed?

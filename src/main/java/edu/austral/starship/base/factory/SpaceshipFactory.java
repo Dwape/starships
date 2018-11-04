@@ -25,19 +25,15 @@ public class SpaceshipFactory extends Factory{
         super(collisionables, objects, drawables);
     }
 
-    public Spaceship createSpaceship(Player player, Vector2 initialPosition, PImage image) {
+    public Spaceship createSpaceship(Player player, Vector2 initialPosition, PImage image, float width, float height) {
 
         String id = UUID.randomUUID().toString();
 
-        Spaceship object = new Spaceship(id, initialPosition, player, 100, 100);
+        Spaceship object = new Spaceship(id, initialPosition, player, 100, 100, width, height);
 
         objects.addObject(object, id);
 
         PlaceableObject element = new PlaceableObject(object);
-
-        int width = 128;
-
-        int height = 128;
 
         Drawable drawable = new Sprite(image, element, width, height);
 

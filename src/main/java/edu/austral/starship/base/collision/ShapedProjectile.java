@@ -46,6 +46,7 @@ public class ShapedProjectile extends ShapedObject{
     }
 
     public void visitProjectile(Projectile projectile) {
+
     }
 
     public void visitSpaceship(Spaceship spaceship) {

@@ -17,7 +17,13 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
 
     private List<Weapon> weapons;
 
-    public Spaceship(String id, Vector2 position, Player player, int pointValue, int health) {
+    private int selectedWeapon;
+
+    private float height;
+
+    private float width;
+
+    public Spaceship(String id, Vector2 position, Player player, int pointValue, int health, float width, float height) {
         super.id = id;
         super.position = position;
         super.velocity = Vector2.vector(0, 0);
@@ -26,6 +32,9 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
         this.pointValue = pointValue;
         super.destroyed = false;
         this.weapons = new ArrayList<>();
+        this.selectedWeapon = 0;
+        this.width = width;
+        this.height = height;
     }
 
     public void update() {
@@ -61,5 +70,23 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
 
     public int returnPoints() {
         return this.pointValue;
+    }
+
+    public void shoot() {
+        // fix it to consider other cases
+        weapons.get(selectedWeapon).shoot();
+    }
+
+    public void changeWeapon() {
+        // Check if this works.
+        selectedWeapon = Math.floorMod(selectedWeapon+1, weapons.size());
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 }
