@@ -176,11 +176,13 @@ public class CustomGameFramework implements GameFramework {
 
         ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables, projectileImage);
 
-        Weapon weapon = new Weapon(projectileFactory, spaceship, 10, 150,2,10, 50);
-        Weapon weapon2 = new Weapon(projectileFactory, spaceship, 10, 150, 5, 10, 10);
+        Weapon weapon = new StandardWeapon(projectileFactory, spaceship, 10, 150,2,10, 50);
+        Weapon weapon2 = new DoubleWeapon(projectileFactory, spaceship, 10, 150, 5, 10, 10);
+        Weapon weapon3 = new QuadrupleWeapon(projectileFactory, spaceship, 10, 150, 5, 10, 10);
 
         spaceship.addWeapon(weapon);
         spaceship.addWeapon(weapon2);
+        spaceship.addWeapon(weapon3);
 
         spaceships.add(spaceship);
 
