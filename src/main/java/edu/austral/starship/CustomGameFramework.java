@@ -20,10 +20,11 @@ import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.event.KeyEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 public class CustomGameFramework implements GameFramework {
 
@@ -44,12 +45,17 @@ public class CustomGameFramework implements GameFramework {
     private Destroyer destroyer;
 
     private List<Spaceship> spaceships = new ArrayList<>();
+
+    private PImage background;
     
     @Override
     public void setup(WindowSettings windowsSettings, ImageLoader imageLoader) {
         windowsSettings
             .setSize(500, 500)
                 .enableHighPixelDensity();
+
+        background = imageLoader.load("background.png");
+        background.resize(1000, 1000);
 
         destroyer = new Destroyer(drawables, collisionables, objects);
 
@@ -63,7 +69,7 @@ public class CustomGameFramework implements GameFramework {
 
         AsteroidFactory asteroidFactory = new AsteroidFactory(collisionables, objects, drawables, asteroidImage);
 
-        asteroidSpawner = new AsteroidSpawner(asteroidFactory, 30, 100, 2, 50, Vector2.vector(500, 500));
+        asteroidSpawner = new AsteroidSpawner(asteroidFactory, 20, 80, 2, 50, Vector2.vector(500, 500));
 
         interpreter = new InputInterpreter();
 
@@ -97,7 +103,14 @@ public class CustomGameFramework implements GameFramework {
     @Override
     public void draw(PGraphics graphics, float timeSinceLastDraw, Set<Integer> keySet) {
 
+        //graphics.background(background);
+        graphics.image(background, 250, 250, 500, 500);
+
         for (Drawable drawable : drawables.getDrawables()) {
+            if (drawable.isActive()) {
+                // remove it from drawables (How?)
+                //drawable.draw(graphics);
+            }
             drawable.draw(graphics);
         }
 
@@ -136,6 +149,8 @@ public class CustomGameFramework implements GameFramework {
             for (int i=0; i <spaceships.size(); i++) {
                 createScoreLabel(spaceships.get(i).getPlayer(), Vector2.vector(210, 100 + 20*i), i+1);
             }
+            Placeable spot = new UIElement(Vector2.vector(210, 70));
+            drawables.addDrawable(new Label(spot, "Game Over", Vector2.vector(0, 0)), "Game");
         }
     }
 
@@ -151,7 +166,7 @@ public class CustomGameFramework implements GameFramework {
 
     private Player createPlayer(PImage image, Vector2 initialPosition, int[] keys, PImage projectileImage, SpaceshipFactory factory) {
         Player player = new Player();
-        Spaceship spaceship = factory.createSpaceship(player, initialPosition, image, 128, 128);
+        Spaceship spaceship = factory.createSpaceship(player, initialPosition, image, 50, 85); //75 125
 
         Action moveW = new Move(spaceship, Vector2.vector(0, -0.05f));
         Action moveS = new Move(spaceship, Vector2.vector(0, 0.05f));
@@ -176,15 +191,19 @@ public class CustomGameFramework implements GameFramework {
 
         ProjectileFactory projectileFactory = new ProjectileFactory(collisionables, objects, drawables, projectileImage);
 
-        Weapon weapon = new StandardWeapon(projectileFactory, spaceship, 10, 150,2,10, 50);
-        Weapon weapon2 = new DoubleWeapon(projectileFactory, spaceship, 10, 150, 5, 10, 10);
-        Weapon weapon3 = new QuadrupleWeapon(projectileFactory, spaceship, 10, 150, 5, 10, 10);
+        Weapon weapon = new StandardWeapon(projectileFactory, spaceship, 10, 150,5,10, 20);
+        Weapon weapon2 = new DoubleWeapon(projectileFactory, spaceship, 8, 75, 4, 10, 10);
+        Weapon weapon3 = new QuadrupleWeapon(projectileFactory, spaceship, 5, 50, 3, 10, 5);
 
         spaceship.addWeapon(weapon);
         spaceship.addWeapon(weapon2);
         spaceship.addWeapon(weapon3);
 
         spaceships.add(spaceship);
+
+        String id = UUID.randomUUID().toString();
+        PlaceableObject placeableObject = new PlaceableObject(spaceship);
+        drawables.addDrawable(new HealthBar(placeableObject, Vector2.vector(0, 0), spaceship), id);
 
         return player;
     }

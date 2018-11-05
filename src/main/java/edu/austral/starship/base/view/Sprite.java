@@ -5,6 +5,9 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Sprite implements Drawable{
 
     // Shouldn't there be an image size?
@@ -17,11 +20,17 @@ public class Sprite implements Drawable{
 
     private float height;
 
+    private boolean activated;
+
+    private List<Drawable> children;
+
     public Sprite(PImage image, PlaceableObject placeable, float width, float height) {
         this.image = image;
         this.placeable = placeable;
         this.width = width;
         this.height = height;
+        this.activated = true;
+        this.children = new ArrayList<>();
     }
 
     public void draw(PGraphics graphics) {
@@ -45,5 +54,24 @@ public class Sprite implements Drawable{
         graphics.rotate(placeable.getOrientation());
         graphics.image(image, 0, 0, width, height);
         graphics.popMatrix();
+
+        for (Drawable child : children) {
+            child.draw(graphics);
+        }
+    }
+
+    public void addChild(Drawable drawable) {
+        children.add(drawable);
+    }
+
+    public void deactivate() {
+        activated = false;
+        for (Drawable child : children) {
+            child.deactivate();
+        }
+    }
+
+    public boolean isActive() {
+        return activated;
     }
 }

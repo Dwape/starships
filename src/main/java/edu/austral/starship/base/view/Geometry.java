@@ -9,7 +9,17 @@ public class Geometry implements Drawable{
 
     public PShape shape;
 
+    private boolean activated;
+
     public void draw(PGraphics graphics) {
 
+    }
+
+    public void deactivate() {
+        activated = false;
+    }
+
+    public boolean isActive() {
+        return activated;
     }
 }

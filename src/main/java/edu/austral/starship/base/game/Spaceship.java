@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Spaceship extends GameObject implements Movable, Rotatable, Damageable, Scoreable {
 
+    private int maxHealth;
     private int health;
 
     private Player player;
@@ -30,6 +31,7 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
         super.position = position;
         super.velocity = Vector2.vector(0, 0);
         this.player = player;
+        this.maxHealth = health;
         this.health = health;
         this.pointValue = pointValue;
         super.destroyed = false;
@@ -99,5 +101,9 @@ public class Spaceship extends GameObject implements Movable, Rotatable, Damagea
 
     public int getHealth() {
         return health;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 }

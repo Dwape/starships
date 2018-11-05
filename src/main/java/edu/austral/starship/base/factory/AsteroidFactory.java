@@ -8,6 +8,7 @@ import edu.austral.starship.base.container.ShapedObjectContainer;
 import edu.austral.starship.base.game.Asteroid;
 import edu.austral.starship.base.vector.Vector2;
 import edu.austral.starship.base.view.Drawable;
+import edu.austral.starship.base.view.HealthBar;
 import edu.austral.starship.base.view.PlaceableObject;
 import edu.austral.starship.base.view.Sprite;
 import processing.core.PImage;
@@ -35,7 +36,12 @@ public class AsteroidFactory extends Factory{
 
         PlaceableObject element = new PlaceableObject(object);
 
-        Drawable drawable = new Sprite(image, element, size, size);
+        Sprite drawable = new Sprite(image, element, size, size);
+
+        //String idHealth = UUID.randomUUID().toString();
+        //HealthBar bar = new HealthBar(element, Vector2.vector(0, 0), object);
+        //drawables.addDrawable(bar, idHealth);
+        //drawable.addChild(bar);
 
         drawables.addDrawable(drawable, id);
 
