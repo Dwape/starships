@@ -10,13 +10,11 @@ public class HealthBar implements Drawable{
     private PlaceableObject placeable;
     private Damageable damageable;
     private Vector2 offset;
-    private boolean activated;
 
     public HealthBar(PlaceableObject object, Vector2 offset, Damageable damageable) {
         this.placeable = object;
         this.damageable = damageable;
         this.offset = offset;
-        this.activated = true;
     }
 
     public void draw(PGraphics graphics) {
@@ -35,13 +33,5 @@ public class HealthBar implements Drawable{
             graphics.popStyle();
             graphics.popMatrix();
         }
-    }
-
-    public void deactivate() {
-        activated = false;
-    }
-
-    public boolean isActive() {
-        return activated;
     }
 }

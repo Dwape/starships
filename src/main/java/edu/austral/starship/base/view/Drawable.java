@@ -6,8 +6,4 @@ public interface Drawable {
 
     public void draw(PGraphics graphics);
 
-    public void deactivate();
-
-    public boolean isActive();
-
 }

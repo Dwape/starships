@@ -38,11 +38,6 @@ public class AsteroidFactory extends Factory{
 
         Sprite drawable = new Sprite(image, element, size, size);
 
-        //String idHealth = UUID.randomUUID().toString();
-        //HealthBar bar = new HealthBar(element, Vector2.vector(0, 0), object);
-        //drawables.addDrawable(bar, idHealth);
-        //drawable.addChild(bar);
-
         drawables.addDrawable(drawable, id);
 
         Shape rectangle = new Rectangle2D.Float(object.getPosition().getX() - size/2, object.getPosition().getY() - size/2, size, size); // The shape could be more sophisticated

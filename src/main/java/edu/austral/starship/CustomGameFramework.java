@@ -20,10 +20,7 @@ import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.event.KeyEvent;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 
 public class CustomGameFramework implements GameFramework {
@@ -73,29 +70,7 @@ public class CustomGameFramework implements GameFramework {
 
         interpreter = new InputInterpreter();
 
-        int numberOfPlayers = 2;
-
-        int[] keys1 = {87, 83, 68, 65, 69, 81};
-        PImage spaceship1Image = imageLoader.load("spaceship1.png");
-        Player player1 = createPlayer(spaceship1Image, Vector2.vector(150, 150), keys1, projectileImage, spaceshipFactory);
-        createScoreLabel(player1, Vector2.vector(30, 30), 1);
-
-        int[] keys2 = {38, 40, 39, 37, 16, 18};
-        PImage spaceship2Image = imageLoader.load("spaceship2.png");
-        Player player2 = createPlayer(spaceship2Image, Vector2.vector(300, 300), keys2, projectileImage, spaceshipFactory);
-        createScoreLabel(player2, Vector2.vector(30, 50), 2);
-
-        /*
-        int[] keys3 = {80, 186, 222, 76, 219, 79};
-        PImage spaceship3Image = imageLoader.load("spaceship3.png");
-        Player player3 = createPlayer(spaceship3Image, Vector2.vector(150, 300), keys3, projectileImage, spaceshipFactory);
-        createScoreLabel(player3, Vector2.vector(30, 70), 3);
-
-        int[] keys4 = {38, 40, 39, 37, 16, 18};
-        PImage spaceship4Image = imageLoader.load("spaceship4.png");
-        Player player4 = createPlayer(spaceship4Image, Vector2.vector(300, 150), keys4, projectileImage, spaceshipFactory);
-        createScoreLabel(player4, Vector2.vector(30, 90), 4);
-        */
+        createPlayers(imageLoader, projectileImage, spaceshipFactory);
     }
 
     // Should draw method deal with the logic of the keys being pressed?
@@ -107,10 +82,6 @@ public class CustomGameFramework implements GameFramework {
         graphics.image(background, 250, 250, 500, 500);
 
         for (Drawable drawable : drawables.getDrawables()) {
-            if (drawable.isActive()) {
-                // remove it from drawables (How?)
-                //drawable.draw(graphics);
-            }
             drawable.draw(graphics);
         }
 
@@ -218,5 +189,49 @@ public class CustomGameFramework implements GameFramework {
         String id = UUID.randomUUID().toString();
 
         drawables.addDrawable(label, id);
+    }
+
+    private void createPlayers(ImageLoader imageLoader, PImage projectileImage, SpaceshipFactory factory) {
+        Properties prop = new Properties();
+        String fileName = "/Users/Dwape/projects/design/starships/src/main/java/edu/austral/starship/starships.conf";
+        InputStream is = null;
+        try {
+            is = new FileInputStream(fileName);
+        } catch (FileNotFoundException ex) {
+
+        }
+        try {
+            prop.load(is);
+        } catch (IOException ex) {
+
+        }
+
+        int numberOfPlayers = Integer.parseInt(prop.getProperty("Number_of_players"));
+
+        int[] keys1 = {87, 83, 68, 65, 69, 81};
+        PImage spaceship1Image = imageLoader.load("spaceship1.png");
+        Player player1 = createPlayer(spaceship1Image, Vector2.vector(150, 150), keys1, projectileImage, factory);
+        createScoreLabel(player1, Vector2.vector(30, 30), 1);
+
+        if (numberOfPlayers > 1) {
+            int[] keys2 = {38, 40, 39, 37, 16, 18};
+            PImage spaceship2Image = imageLoader.load("spaceship2.png");
+            Player player2 = createPlayer(spaceship2Image, Vector2.vector(300, 300), keys2, projectileImage, factory);
+            createScoreLabel(player2, Vector2.vector(30, 50), 2);
+        }
+
+        if (numberOfPlayers > 2) {
+            int[] keys3 = {80, 186, 222, 76, 219, 79};
+            PImage spaceship3Image = imageLoader.load("spaceship3.png");
+            Player player3 = createPlayer(spaceship3Image, Vector2.vector(150, 300), keys3, projectileImage, factory);
+            createScoreLabel(player3, Vector2.vector(30, 70), 3);
+        }
+
+        if (numberOfPlayers > 3) {
+            int[] keys4 = {38, 40, 39, 37, 16, 18};
+            PImage spaceship4Image = imageLoader.load("spaceship4.png");
+            Player player4 = createPlayer(spaceship4Image, Vector2.vector(300, 150), keys4, projectileImage, factory);
+            createScoreLabel(player4, Vector2.vector(30, 90), 4);
+        }
     }
 }
